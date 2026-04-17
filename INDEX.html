@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHIBASS-MUSIC</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #ffffff;
+    --black: #000000;
+    --accent: #00d4ff;
+    --accent2: #ff0066;
+    --dark: #0a0a0a;
+    --mid: #111111;
+    --gray: #888888;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+  }
+
+  .nav-logo img {
+    height: 42px;
+    filter: brightness(0) invert(1);
+  }
+
+  .nav-logo span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 150vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--black);
+  }
+  
+  .hero {
+    position: relative;
+    height: 55vh;
+    min-height: 55px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+}
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,180,255,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(255,0,102,0.06) 0%, transparent 60%),
+      linear-gradient(180deg, #000 0%, #0a0a12 50%, #000 100%);
+  }
+
+  /* Animated grid lines */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+  }
+
+  .hero-album-art {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    animation: fadeUp 1.2s ease forwards;
+  }
+
+  .album-cover {
+    width: min(380px, 80vw);
+    aspect-ratio: 1;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a0a2e 50%, #0d1b2a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    position: relative;
+    box-shadow: 0 0 80px rgba(0,212,255,0.15), 0 0 160px rgba(0,212,255,0.05);
+    overflow: hidden;
+  }
+
+  .album-cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(0,212,255,0.2) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 70%, rgba(255,0,102,0.1) 0%, transparent 50%);
+  }
+
+  .album-title-img {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    letter-spacing: 6px;
+    line-height: 1;
+    color: var(--white);
+    text-align: center;
+    padding: 30px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 40px rgba(0,212,255,0.6);
+  }
+
+  .hero-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .hero-song-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    letter-spacing: 5px;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    color: var(--black);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 13px 32px;
+    border: 1px solid rgba(255,255,255,0.4);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--white);
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrapper {
+    overflow: hidden;
+    background: var(--white);
+    padding: 12px 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 60px;
+    animation: ticker 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--black);
+    flex-shrink: 0;
+  }
+
+  .ticker-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent2);
+    flex-shrink: 0;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── VIDEO SECTION ── */
+  .section {
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 40px;
+    color: var(--white);
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #0a0a0a;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .video-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0d1b2a 0%, #1a0a2e 60%, #0d2233 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-thumb-placeholder span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    transition: background 0.3s;
+  }
+
+  .video-container:hover .play-overlay { background: rgba(0,0,0,0.15); }
+
+  .play-btn {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .video-container:hover .play-btn {
+    transform: scale(1.1);
+    border-color: var(--accent);
+  }
+
+  .play-btn svg { fill: var(--white); width: 24px; height: 24px; margin-left: 4px; }
+
+  .more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    margin-top: 28px;
+    transition: color 0.2s;
+  }
+
+  .more-link::after {
+    content: '→';
+    font-size: 1rem;
+    transition: transform 0.2s;
+  }
+
+  .more-link:hover { color: var(--accent); }
+  .more-link:hover::after { transform: translateX(4px); }
+
+  /* ── TOUR SECTION ── */
+  .tour-section {
+    padding: 100px 0;
+    background: var(--mid);
+  }
+
+  .tour-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .tour-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .tour-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .tour-date-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 180px 140px;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .tour-date-row:hover {
+    background: rgba(255,255,255,0.03);
+    padding-left: 8px;
+  }
+
+  .tour-date-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  .tour-venue-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+
+  .tour-venue-city {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-top: 3px;
+    letter-spacing: 1px;
+  }
+
+  .tour-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--gray);
+  }
+
+  .tour-ticket-btn {
+    background: transparent;
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .tour-ticket-btn:hover {
+    background: var(--white);
+    color: var(--black);
+  }
+
+  /* ── TEXT MARQUEE ── */
+  .text-marquee {
+    overflow: hidden;
+    padding: 60px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: var(--black);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marqueeScroll 18s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 8vw, 8rem);
+    letter-spacing: 6px;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.15);
+    padding-right: 80px;
+    flex-shrink: 0;
+  }
+
+  .marquee-item.filled {
+    color: var(--white);
+    -webkit-text-stroke: none;
+  }
+
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── TEXT ME SECTION ── */
+  .text-me-section {
+    padding: 80px 40px;
+    background: var(--accent);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .text-me-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 10px,
+      rgba(0,0,0,0.04) 10px,
+      rgba(0,0,0,0.04) 20px
+    );
+  }
+
+  .text-me-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .text-me-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.6);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .text-me-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    letter-spacing: 5px;
+    color: var(--black);
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .text-me-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .text-me-cta:hover { background: #111; }
+
+  /* ── SIGNUP SECTION ── */
+  .signup-section {
+    padding: 100px 40px;
+    background: var(--dark);
+    text-align: center;
+  }
+
+  .signup-section .section-title { margin-bottom: 10px; }
+
+  .signup-subtitle {
+    font-size: 0.9rem;
+    color: var(--gray);
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+  }
+
+  .signup-form {
+    display: flex;
+    gap: 0;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .signup-input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-right: none;
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    padding: 14px 20px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .signup-input::placeholder { color: rgba(255,255,255,0.3); }
+  .signup-input:focus { border-color: rgba(255,255,255,0.4); }
+
+  .signup-btn {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .signup-btn:hover { background: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    color: var(--white);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-social {
+    display: flex;
+    gap: 16px;
+  }
+
+  .social-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 1px;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+
+  .social-icon:hover {
+    border-color: var(--white);
+    color: var(--white);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .footer-copy {
+    width: 100%;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+    margin-top: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .section { padding: 60px 20px; }
+    .tour-inner { padding: 0 20px; }
+    .tour-date-row { grid-template-columns: 80px 1fr; }
+    .tour-tag, .tour-ticket-btn { display: none; }
+    .tour-date-row { gap: 12px; }
+    footer { padding: 30px 20px; }
+    .signup-section { padding: 60px 20px; }
+    .text-me-section { padding: 50px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>-SHIBASS-</span></a>
+  <ul class="nav-links">
+    <li><a href="#tour">Tour</a></li>
+    <li><a href="#" target="_blank">Shop</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- החלפה של hero-album-art בקטע 3D -->
+  <div class="hero-album-art">
+    <div class="scene">
+	<h4>Wolcome To:</h4>
+      <h1>SHIBASS-MUSIC</h1>
+      <div class="orbital">
+       
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <span class="hero-label">Out Now</span>
+  <div class="hero-song-title">MUSIC | DJ</div>
+  <div class="hero-cta">
+    <a href="#" class="btn-primary">Listen Now</a>
+    <a href="#" class="btn-outline">Shop Merch</a>
+  </div>
+</section>
+      </div>
+    </div>
+    <span class="hero-label">Out Now</span>
+    <div class="hero-song-title">MUSIC | DJ</div>
+    <div class="hero-cta">
+      <a href="#" class="btn-primary">Listen Now</a>
+      <a href="#" class="btn-outline">Shop Merch</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrapper">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-dot"></span>MUSIC | DJ — Out Now</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>SHIBASS On Tour 2026</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Custom music creation + music lessons</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> ✆052-425-2724✆</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>MUSIC | DJ — Out Now</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>SHIBASS On Tour 2026</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Custom music creation + music lessons</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> ✆052-425-2724✆</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span>MUSIC | DJ — Out Now</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>SHIBASS On Tour 2026</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Custom music creation + music lessons</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> ✆052-425-2724✆</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>MUSIC | DJ — Out Now</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>SHIBASS On Tour 2026</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Custom music creation + music lessons</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> ✆052-425-2724✆</div>
+  </div>
+</div>
+
+<!-- VIDEO SECTION -->
+<div class="section">
+  <span class="section-label">Latest Video</span>
+  <h2 class="section-title">Watch</h2>
+  <div class="video-container" onclick="this.querySelector('.play-overlay').style.opacity='0'">
+    <div class="video-thumb-placeholder">
+      <span>SHIBASS — MUSIC | DJ</span>
+    </div>
+    <div class="play-overlay">
+      <div class="play-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <a href="#" class="more-link">More Videos</a>
+</div>
+
+<!-- MARQUEE -->
+<div class="text-marquee">
+  <div class="marquee-track">
+    <span class="marquee-item filled">SHIBASS-MUSIC</span>
+    <span class="marquee-item">2026 TOUR</span>
+    <span class="marquee-item filled">SHIBASS</span>
+    <span class="marquee-item">MUSIC | DJ</span>
+    <span class="marquee-item filled">SHIBASS-MUSIC</span>
+    <span class="marquee-item">2026 TOUR</span>
+    <!-- duplicate -->
+    <span class="marquee-item filled">SHIBASS</span>
+    <span class="marquee-item">2026 TOUR</span>
+    <span class="marquee-item filled">SHIBASS</span>
+    <span class="marquee-item">MUSIC | DJ</span>
+    <span class="marquee-item filled">SHIBASS-MUSIC</span>
+    <span class="marquee-item">2026 TOUR</span>
+  </div>
+</div>
+
+<!-- TOUR SECTION -->
+<section class="tour-section" id="tour">
+  <div class="tour-inner">
+    <div class="tour-header">
+      <div>
+        <span class="section-label">Live</span>
+        <h2 class="section-title">See SHIBASS On Tour</h2>
+      </div>
+      <a href="#" class="btn-outline">View All Dates</a>
+    </div>
+
+    <div class="tour-dates">
+      <div class="tour-date-row">
+        <div class="tour-date-num">APR 18</div>
+        <div>
+          <div class="tour-venue-name">Echostage</div>
+          <div class="tour-venue-city">Washington, DC — USA</div>
+        </div>
+        <div><span class="tour-tag">Headline</span></div>
+        <a href="#" class="tour-ticket-btn">Tickets</a>
+      </div>
+      <div class="tour-date-row">
+        <div class="tour-date-num">APR 25</div>
+        <div>
+          <div class="tour-venue-name">Omnia Nightclub</div>
+          <div class="tour-venue-city">Las Vegas, NV — USA</div>
+        </div>
+        <div><span class="tour-tag">Residency</span></div>
+        <a href="#" class="tour-ticket-btn">Tickets</a>
+      </div>
+      <div class="tour-date-row">
+        <div class="tour-date-num">MAY 03</div>
+        <div>
+          <div class="tour-venue-name">Hï Ibiza</div>
+          <div class="tour-venue-city">Ibiza — Spain</div>
+        </div>
+        <div><span class="tour-tag">Residency</span></div>
+        <a href="#" class="tour-ticket-btn">Tickets</a>
+      </div>
+      <div class="tour-date-row">
+        <div class="tour-date-num">MAY 10</div>
+        <div>
+          <div class="tour-venue-name">Tomorrowland</div>
+          <div class="tour-venue-city">Boom — Belgium</div>
+        </div>
+        <div><span class="tour-tag">Festival</span></div>
+        <a href="#" class="tour-ticket-btn">Tickets</a>
+      </div>
+      <div class="tour-date-row">
+        <div class="tour-date-num">MAY 17</div>
+        <div>
+          <div class="tour-venue-name">E1 London</div>
+          <div class="tour-venue-city">London — UK</div>
+        </div>
+        <div><span class="tour-tag">Headline</span></div>
+        <a href="#" class="tour-ticket-btn">Tickets</a>
+      </div>
+      <div class="tour-date-row">
+        <div class="tour-date-num">MAY 31</div>
+        <div>
+          <div class="tour-venue-name">Ultra Music Festival</div>
+          <div class="tour-venue-city">Miami, FL — USA</div>
+        </div>
+        <div><span class="tour-tag">Festival</span></div>
+        <a href="#" class="tour-ticket-btn">Tickets</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEXT ME SECTION -->
+<section class="text-me-section">
+  <div class="text-me-content">
+    <span class="text-me-label">Stay Connected</span>
+    <span class="text-me-number">✆052-425-2724✆</span>
+    <a href="https://tiesto.superphone.io/" class="text-me-cta" target="_blank">
+      💬 Text Me!
+    </a>
+  </div>
+</section>
+
+<!-- SIGNUP SECTION -->
+<section class="signup-section">
+  <span class="section-label">Newsletter</span>
+  <h2 class="section-title">Sign Up For Updates<br>From SHIBASS-Music</h2>
+  <p class="signup-subtitle">Be the first to hear new music, tour dates & more</p>
+  <div class="signup-form">
+    <input type="email" class="signup-input" placeholder="Enter your email">
+    <button class="signup-btn">Sign Up</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">SHIBASS-MUSIC</div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms Of Use</a>
+    <a href="#">Cookies Policy</a>
+  </div>
+  <div class="footer-social">
+    <a class="social-icon" href="https://www.instagram.com/shibassmusic/" title="Instagram">IG</a>
+    <a class="social-icon" href="https://soundcloud.com/shibass" title="Soundcloud">S</a>
+    <a class="social-icon" href="https://www.facebook.com/shibassofficial/" title="Facebook">FB</a>
+    <a class="social-icon" href="https://open.spotify.com/artist/1XXMyElYP2WrCCcj93i0ii?autoplay=true" title="Spotify">SP</a>
+    <a class="social-icon" href="https://music.youtube.com/channel/UCVbLZS_pAc1wleNDkE-Mo6g" title="YouTube">YT</a>
+  </div>
+  <div class="footer-copy">053-3350321|©2026 בניית אתרים EAZY-FIX|  — All Rights Reserved</div>
+</footer>
+
+</body>
+</html>
